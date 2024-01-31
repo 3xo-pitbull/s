@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>عرض رقم عشوائي</title>
+    <style>
+        #countdownDisplay {
+            color: red; /* لون افتراضي */
+        }
+    </style>
 </head>
 <body>
     <h1>رقم عشوائي</h1>
@@ -13,8 +18,15 @@
     <script>
         let countdownValue = 3600; // 3600 ثانية = ساعة واحدة
         let countdownInterval;
+        let isBrowserBlocked = false;
 
         function generateRandomNumber() {
+            // التحقق مما إذا كان المتصفح قد تم حظره
+            if (isBrowserBlocked) {
+                alert('تم حظر المتصفح لمدة ساعة');
+                return;
+            }
+
             // قراءة محتوى ملف JSON
             fetch('data.json')
                 .then(response => response.json())
@@ -32,6 +44,10 @@
 
                     // إعادة تعيين الرقم بعد مرور الساعة
                     setTimeout(() => resetNumber(randomNumber), 3600000); // 3600000 مللي ثانية = ساعة واحدة
+
+                    // حظر المتصفح لمدة ساعة
+                    isBrowserBlocked = true;
+                    setTimeout(() => isBrowserBlocked = false, 3600000); // 3600000 مللي ثانية = ساعة واحدة
                 })
                 .catch(error => console.error('حدث خطأ في قراءة الملف JSON:', error));
         }
@@ -39,6 +55,9 @@
         function resetNumber(previousNumber) {
             // عند إعادة تحديث الرقم بعد مرور الساعة
             document.getElementById('randomNumberDisplay').textContent = 'الرقم العشوائي: ' + previousNumber;
+
+            // إعادة تعيين الوقت التنازلي للمرة القادمة
+            startCountdown();
         }
 
         function startCountdown() {
@@ -47,12 +66,16 @@
                 countdownValue--;
 
                 // عرض الوقت التنازلي
-                document.getElementById('countdownDisplay').textContent = `الوقت المتبقي: ${formatTime(countdownValue)}`;
+                const countdownDisplay = document.getElementById('countdownDisplay');
+                countdownDisplay.textContent = `الوقت المتبقي: ${formatTime(countdownValue)}`;
+
+                // تغيير لون الوقت التنازلي إلى أحمر إذا كان أقل من 10 ثوان
+                countdownDisplay.style.color = countdownValue < 10 ? 'red' : 'black';
 
                 if (countdownValue <= 0) {
                     // إيقاف العد التنازلي عند انتهاء الساعة
                     clearInterval(countdownInterval);
-                    document.getElementById('countdownDisplay').textContent = 'انتهى الوقت';
+                    countdownDisplay.textContent = 'انتهى الوقت';
                 }
             }, 1000);
         }
