@@ -8,10 +8,10 @@
 <body>
     <h1>رقم عشوائي</h1>
     <p id="randomNumberDisplay"></p>
-    <button onclick="generateAndResetNumber()">عرض رقم عشوائي</button>
+    <button onclick="generateRandomNumber()">عرض رقم عشوائي</button>
 
     <script>
-        function generateAndResetNumber() {
+        function generateRandomNumber() {
             // قراءة محتوى ملف JSON
             fetch('data.json')
                 .then(response => response.json())
@@ -23,14 +23,14 @@
                     // عرض الرقم في الصفحة
                     document.getElementById('randomNumberDisplay').textContent = 'الرقم العشوائي: ' + randomNumber;
 
-                    // تمرير الرقم للدالة التي ستستدعى بعد ساعة
+                    // تمرير الرقم وتحديد وقت لإعادة تحديثه بعد ساعة
                     setTimeout(() => resetNumber(randomNumber), 3600000); // 3600000 مللي ثانية = ساعة واحدة
                 })
                 .catch(error => console.error('حدث خطأ في قراءة الملف JSON:', error));
         }
 
         function resetNumber(previousNumber) {
-            // إعادة تحديث الرقم بعد مرور الساعة
+            // عند إعادة تحديث الرقم بعد مرور الساعة
             document.getElementById('randomNumberDisplay').textContent = 'الرقم العشوائي: ' + previousNumber;
         }
     </script>
