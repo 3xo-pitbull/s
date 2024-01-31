@@ -1,33 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>عرض رقم عشوائي</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Condolence Number</title>
 </head>
 <body>
 
-  <h1>الرقم العشوائي:</h1>
-  <p id="randomNumber"></p>
+<button onclick="displayCondolenceNumber()">Display Condolence Number</button>
 
-  <script>
-    // استدعاء الدالة بعد مرور وقت معين
-    setInterval(updateRandomNumber, 5000); // هنا يتم تحديث الرقم كل 5 ثواني
-
-    // دالة لتحديث الرقم العشوائي
-    function updateRandomNumber() {
-      fetch('data.json') // جلب البيانات من ملف data.json
-        .then(response => response.json())
-        .then(data => {
-          const randomNumber = data.number;
-          document.getElementById('randomNumber').textContent = randomNumber;
-        })
-        .catch(error => console.error('حدث خطأ: ', error));
+<script>
+    // Fetch data from JSON file
+    async function fetchData() {
+        const response = await fetch('data.json');
+        const data = await response.json();
+        return data.condolenceNumber;
     }
 
-    // تحديث الرقم عند تحميل الصفحة لأول مرة
-    updateRandomNumber();
-  </script>
+    // Display the condolence number
+    async function displayCondolenceNumber() {
+        const condolenceNumber = await fetchData();
+        alert('The condolence number is: ' + condolenceNumber);
+    }
+</script>
 
 </body>
 </html>
