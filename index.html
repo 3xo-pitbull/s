@@ -40,8 +40,7 @@
                     // عرض الرقم في الصفحة
                     document.getElementById('randomNumberDisplay').textContent = 'الرقم العشوائي: ' + randomNumber;
 
-                    // إعادة تعيين الوقت التنازلي
-                    countdownValue = 3600;
+                    // بدء الوقت التنازلي
                     startCountdown();
 
                     // حظر المتصفح لمدة ساعة
@@ -52,14 +51,6 @@
                     }, 3600000); // 3600000 مللي ثانية = ساعة واحدة
                 })
                 .catch(error => console.error('حدث خطأ في قراءة الملف JSON:', error));
-        }
-
-        function resetNumber(previousNumber) {
-            // عند إعادة تحديث الرقم بعد مرور الساعة
-            document.getElementById('randomNumberDisplay').textContent = 'الرقم العشوائي: ' + previousNumber;
-
-            // إعادة تعيين الوقت التنازلي للمرة القادمة
-            startCountdown();
         }
 
         function startCountdown() {
