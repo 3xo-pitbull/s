@@ -14,32 +14,49 @@
     <script>
         function updateCountdown() {
             const now = new Date();
-            const nextDay = new Date(now);
-            nextDay.setDate(nextDay.getDate() + 1);
-            nextDay.setHours(0, 0, 0, 0);
-
-            const timeDifference = nextDay - now;
+            const nextAccessTime = new Date(now.getTime() + 60000); // يمكن الوصول بعد دقيقة
 
             const countdownElement = document.getElementById('countdown');
-            
-            if (timeDifference > 0) {
-                const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
-                countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-                countdownElement.style.color = 'red';
+            function updateDisplay() {
+                const timeDifference = nextAccessTime - now;
 
-                setTimeout(updateCountdown, 1000);
-            } else {
-                countdownElement.textContent = 'Ready for the next number!';
-                countdownElement.style.color = 'green';
+                if (timeDifference > 0) {
+                    const minutes = Math.floor(timeDifference / (1000 * 60));
+                    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+                    countdownElement.textContent = `Next access in: ${minutes}m ${seconds}s`;
+                    countdownElement.style.color = 'red';
+
+                    setTimeout(updateDisplay, 1000);
+                } else {
+                    countdownElement.textContent = 'You can access the number now!';
+                    countdownElement.style.color = 'green';
+                    document.getElementById('generateButton').disabled = false; // تمكين الزر
+                }
             }
+
+            updateDisplay();
         }
 
-        // تشغيل العداد التنازلي عند تحميل الصفحة
-        window.onload = updateCountdown;
+        document.getElementById('generateButton').addEventListener('click', function () {
+            const generatedNumber = generateRandomNumber();
+
+            // عرض الرقم داخل زر "Generate Random Number"
+            document.getElementById('generateButton').textContent = `Random Number: ${generatedNumber}`;
+
+            // تعطيل الزر لمدة دقيقة
+            document.getElementById('generateButton').disabled = true;
+
+            // تحديث العداد التنازلي
+            updateCountdown();
+        });
+
+        function generateRandomNumber() {
+            // هنا يمكنك استيراد الرقم من ملف data.json أو توليده كما تحتاج
+            // لهذا المثال، سأقوم بتوليد رقم عشوائي بين 1 و 100
+            return Math.floor(Math.random() * 100) + 1;
+        }
     </script>
 
     <style>
