@@ -8,9 +8,12 @@
 <body>
     <h1>رقم عشوائي</h1>
     <p id="randomNumberDisplay"></p>
-    <button onclick="generateRandomNumber()">عرض رقم عشوائي</button>
+    <div id="countdownDisplay"></div>
 
     <script>
+        let countdownValue = 3600; // 3600 ثانية = ساعة واحدة
+        let countdownInterval;
+
         function generateRandomNumber() {
             // قراءة محتوى ملف JSON
             fetch('data.json')
@@ -23,7 +26,11 @@
                     // عرض الرقم في الصفحة
                     document.getElementById('randomNumberDisplay').textContent = 'الرقم العشوائي: ' + randomNumber;
 
-                    // تمرير الرقم وتحديد وقت لإعادة تحديثه بعد ساعة
+                    // إعادة تعيين الوقت التنازلي
+                    countdownValue = 3600;
+                    startCountdown();
+
+                    // إعادة تعيين الرقم بعد مرور الساعة
                     setTimeout(() => resetNumber(randomNumber), 3600000); // 3600000 مللي ثانية = ساعة واحدة
                 })
                 .catch(error => console.error('حدث خطأ في قراءة الملف JSON:', error));
@@ -33,6 +40,30 @@
             // عند إعادة تحديث الرقم بعد مرور الساعة
             document.getElementById('randomNumberDisplay').textContent = 'الرقم العشوائي: ' + previousNumber;
         }
+
+        function startCountdown() {
+            // بدء الوقت التنازلي
+            countdownInterval = setInterval(function () {
+                countdownValue--;
+
+                // عرض الوقت التنازلي
+                document.getElementById('countdownDisplay').textContent = `الوقت المتبقي: ${formatTime(countdownValue)}`;
+
+                if (countdownValue <= 0) {
+                    // إيقاف العد التنازلي عند انتهاء الساعة
+                    clearInterval(countdownInterval);
+                    document.getElementById('countdownDisplay').textContent = 'انتهى الوقت';
+                }
+            }, 1000);
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+        }
     </script>
+    <br>
+    <button onclick="generateRandomNumber()">عرض رقم عشوائي</button>
 </body>
 </html>
