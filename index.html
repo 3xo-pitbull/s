@@ -10,6 +10,7 @@
 
     <button id="generateButton">Generate Random Number</button>
     <div id="countdown"></div>
+    <div id="lastAccessTime"></div>
 
     <script>
         function updateCountdown() {
@@ -40,22 +41,43 @@
         }
 
         document.getElementById('generateButton').addEventListener('click', function () {
-            // تعطيل الزر لمدة دقيقة
-            document.getElementById('generateButton').disabled = true;
+            const lastAccessTime = localStorage.getItem('lastAccessTime');
+            const now = new Date();
 
-            fetch('data.json')
-                .then(response => response.json())
-                .then(data => {
-                    const randomNumber = data.number;
+            if (!lastAccessTime || now - new Date(lastAccessTime) >= 60000) {
+                // تعطيل الزر لمدة دقيقة
+                document.getElementById('generateButton').disabled = true;
 
-                    // عرض الرقم داخل زر "Generate Random Number"
-                    document.getElementById('generateButton').textContent = `Random Number: ${randomNumber}`;
+                fetch('data.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        const randomNumber = data.number;
 
-                    // تحديث العداد التنازلي
-                    updateCountdown();
-                })
-                .catch(error => console.error('Error fetching data:', error));
+                        // عرض الرقم داخل زر "Generate Random Number"
+                        document.getElementById('generateButton').textContent = `Random Number: ${randomNumber}`;
+
+                        // تسجيل وقت الحصول على الرقم في التخزين المحلي
+                        localStorage.setItem('lastAccessTime', now);
+
+                        // عرض وقت الحصول على الرقم
+                        document.getElementById('lastAccessTime').textContent = `Last access time: ${formatTime(now)}`;
+
+                        // تحديث العداد التنازلي
+                        updateCountdown();
+                    })
+                    .catch(error => console.error('Error fetching data:', error));
+            } else {
+                alert('You can only generate one number per minute.');
+            }
         });
+
+        function formatTime(date) {
+            const minutes = date.getMinutes();
+            const seconds = date.getSeconds();
+            const milliseconds = date.getMilliseconds();
+
+            return `${minutes}m ${seconds}s ${milliseconds}ms`;
+        }
     </script>
 
     <style>
@@ -76,6 +98,11 @@
         }
 
         #countdown {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        #lastAccessTime {
             margin-top: 10px;
             font-size: 16px;
         }
