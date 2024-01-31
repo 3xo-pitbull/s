@@ -4,11 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>عرض رقم عشوائي من JSON</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        button {
+            font-size: 1.5em;
+        }
+    </style>
 </head>
 <body>
-    <h1>رقم عشوائي</h1>
-    <p id="randomNumberDisplay"></p>
-    <button onclick="generateRandomNumber()">عرض رقم عشوائي</button>
+    <button onclick="generateRandomNumber()" id="randomNumberButton">انشاء الرقم</button>
 
     <script>
         function generateRandomNumber() {
@@ -23,10 +34,11 @@
                         const randomIndex = Math.floor(Math.random() * randomNumbers.length);
                         const randomNumber = randomNumbers[randomIndex];
 
-                        // عرض الرقم في الصفحة
-                        document.getElementById('randomNumberDisplay').textContent = 'الرقم العشوائي: ' + randomNumber;
+                        // عرض الرقم في زر الأرقام
+                        const buttonElement = document.getElementById('randomNumberButton');
+                        buttonElement.textContent = 'الرقم العشوائي: ' + randomNumber;
                     } else {
-                        document.getElementById('randomNumberDisplay').textContent = 'لقد تم عرض كل الأرقام.';
+                        alert('لقد تم عرض كل الأرقام.');
                     }
                 })
                 .catch(error => console.error('حدث خطأ في قراءة الملف JSON:', error));
