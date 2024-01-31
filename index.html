@@ -22,25 +22,42 @@
     <button id="randomNumberButton"></button>
 
     <script>
-        // قراءة محتوى ملف JSON
-        fetch('data.json')
-            .then(response => response.json())
-            .then(data => {
-                // تحديد رقم عشوائي من الأرقام المتاحة
-                const randomNumbers = data.numbers;
+        function generateRandomNumber() {
+            const lastUpdateTime = localStorage.getItem('lastUpdateTime');
+            const currentTime = new Date().getTime();
 
-                if (randomNumbers.length > 0) {
-                    const randomIndex = Math.floor(Math.random() * randomNumbers.length);
-                    const randomNumber = randomNumbers[randomIndex];
+            // إذا لم يتم تحديث الرقم في الـ 60 ثانية الأخيرة
+            if (!lastUpdateTime || (currentTime - lastUpdateTime > 60000)) {
+                // قراءة محتوى ملف JSON
+                fetch('data.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        // تحديد رقم عشوائي من الأرقام المتاحة
+                        const randomNumbers = data.numbers;
 
-                    // عرض الرقم في زر الأرقام
-                    const buttonElement = document.getElementById('randomNumberButton');
-                    buttonElement.textContent = 'الرقم العشوائي: ' + randomNumber;
-                } else {
-                    alert('لقد تم عرض كل الأرقام.');
-                }
-            })
-            .catch(error => console.error('حدث خطأ في قراءة الملف JSON:', error));
+                        if (randomNumbers.length > 0) {
+                            const randomIndex = Math.floor(Math.random() * randomNumbers.length);
+                            const randomNumber = randomNumbers[randomIndex];
+
+                            // عرض الرقم في زر الأرقام
+                            const buttonElement = document.getElementById('randomNumberButton');
+                            buttonElement.textContent = 'الرقم العشوائي: ' + randomNumber;
+
+                            // تخزين الوقت الحالي
+                            localStorage.setItem('lastUpdateTime', currentTime);
+                        } else {
+                            alert('لقد تم عرض كل الأرقام.');
+                        }
+                    })
+                    .catch(error => console.error('حدث خطأ في قراءة الملف JSON:', error));
+            } else {
+                // إذا كان قد تم تحديث الرقم في الـ 60 ثانية الأخيرة
+                alert('لم يمر وقت كافٍ لتحديث الرقم.');
+            }
+        }
+
+        // عرض الرقم عند تحميل الصفحة
+        generateRandomNumber();
     </script>
 </body>
 </html>
