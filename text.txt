@@ -13,13 +13,13 @@
             margin: 0;
         }
 
-        p {
+        button {
             font-size: 1.5em;
         }
     </style>
 </head>
 <body>
-    <p id="randomNumberDisplay"></p>
+    <button id="randomNumberButton"></button>
 
     <script>
         // قراءة محتوى ملف JSON
@@ -33,9 +33,9 @@
                     const randomIndex = Math.floor(Math.random() * randomNumbers.length);
                     const randomNumber = randomNumbers[randomIndex];
 
-                    // عرض الرقم في الصفحة
-                    const displayElement = document.getElementById('randomNumberDisplay');
-                    displayElement.textContent = 'الرقم العشوائي: ' + randomNumber;
+                    // عرض الرقم في زر الأرقام
+                    const buttonElement = document.getElementById('randomNumberButton');
+                    buttonElement.textContent = 'الرقم العشوائي: ' + randomNumber;
                 } else {
                     alert('لقد تم عرض كل الأرقام.');
                 }
