@@ -13,36 +13,34 @@
             margin: 0;
         }
 
-        button {
+        p {
             font-size: 1.5em;
         }
     </style>
 </head>
 <body>
-    <button onclick="generateRandomNumber()" id="randomNumberButton">انشاء الرقم</button>
+    <p id="randomNumberDisplay"></p>
 
     <script>
-        function generateRandomNumber() {
-            // قراءة محتوى ملف JSON
-            fetch('data.json')
-                .then(response => response.json())
-                .then(data => {
-                    // تحديد رقم عشوائي من الأرقام المتاحة
-                    const randomNumbers = data.numbers;
+        // قراءة محتوى ملف JSON
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                // تحديد رقم عشوائي من الأرقام المتاحة
+                const randomNumbers = data.numbers;
 
-                    if (randomNumbers.length > 0) {
-                        const randomIndex = Math.floor(Math.random() * randomNumbers.length);
-                        const randomNumber = randomNumbers[randomIndex];
+                if (randomNumbers.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * randomNumbers.length);
+                    const randomNumber = randomNumbers[randomIndex];
 
-                        // عرض الرقم في زر الأرقام
-                        const buttonElement = document.getElementById('randomNumberButton');
-                        buttonElement.textContent = 'الرقم العشوائي: ' + randomNumber;
-                    } else {
-                        alert('لقد تم عرض كل الأرقام.');
-                    }
-                })
-                .catch(error => console.error('حدث خطأ في قراءة الملف JSON:', error));
-        }
+                    // عرض الرقم في الصفحة
+                    const displayElement = document.getElementById('randomNumberDisplay');
+                    displayElement.textContent = 'الرقم العشوائي: ' + randomNumber;
+                } else {
+                    alert('لقد تم عرض كل الأرقام.');
+                }
+            })
+            .catch(error => console.error('حدث خطأ في قراءة الملف JSON:', error));
     </script>
 </body>
 </html>
