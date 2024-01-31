@@ -9,22 +9,68 @@
 <body>
 
     <button id="generateButton">Generate Random Number</button>
+    <div id="countdown"></div>
 
     <script>
         document.getElementById('generateButton').addEventListener('click', function () {
-            // استيراد ملف data.json
-            fetch('data.json')
-                .then(response => response.json())
-                .then(data => {
-                    // اختيار عنصر عشوائي من المصفوفة
-                    const randomIndex = Math.floor(Math.random() * data.numbers.length);
-                    const randomNum = data.numbers[randomIndex];
+            const lastGeneratedDate = localStorage.getItem('lastGeneratedDate');
 
-                    // عرض الرقم داخل زر "Generate Random Number"
-                    document.getElementById('generateButton').textContent = `Random Number: ${randomNum}`;
-                })
-                .catch(error => console.error('Error fetching data:', error));
+            // التحقق من مرور يوم كامل منذ آخر مرة تم فيها جلب الرقم
+            if (!lastGeneratedDate || isDayPassed(new Date(lastGeneratedDate))) {
+                fetch('data.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        // اختيار عنصر عشوائي من المصفوفة
+                        const randomIndex = Math.floor(Math.random() * data.numbers.length);
+                        const randomNum = data.numbers[randomIndex];
+
+                        // عرض الرقم داخل زر "Generate Random Number"
+                        document.getElementById('generateButton').textContent = `Random Number: ${randomNum}`;
+
+                        // تحديث تاريخ آخر مرة تم فيها جلب الرقم
+                        localStorage.setItem('lastGeneratedDate', new Date().toISOString());
+
+                        // إعداد العداد التنازلي لليوم والساعة والدقائق والثواني
+                        setupCountdown();
+                    })
+                    .catch(error => console.error('Error fetching data:', error));
+            } else {
+                alert('You can only generate one number per day.');
+            }
         });
+
+        function isDayPassed(lastDate) {
+            const today = new Date();
+            return today.getDate() !== lastDate.getDate() || today.getMonth() !== lastDate.getMonth() || today.getFullYear() !== lastDate.getFullYear();
+        }
+
+        function setupCountdown() {
+            // تاريخ الحصول على الرقم في اليوم التالي
+            const nextDay = new Date();
+            nextDay.setDate(nextDay.getDate() + 1);
+            nextDay.setHours(0, 0, 0, 0);
+
+            const countdownElement = document.getElementById('countdown');
+
+            function updateCountdown() {
+                const now = new Date();
+                const timeDifference = nextDay - now;
+
+                if (timeDifference > 0) {
+                    const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+                    countdownElement.textContent = `Next generation in: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+                    setTimeout(updateCountdown, 1000);
+                } else {
+                    countdownElement.textContent = '';
+                }
+            }
+
+            updateCountdown();
+        }
     </script>
 
     <style>
@@ -32,14 +78,21 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
             height: 100vh;
             margin: 0;
         }
 
         button {
+            margin-top: 20px;
             padding: 10px;
             font-size: 16px;
             cursor: pointer;
+        }
+
+        #countdown {
+            margin-top: 10px;
+            font-size: 16px;
         }
     </style>
 
