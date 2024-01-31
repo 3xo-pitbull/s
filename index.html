@@ -3,24 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Display Condolence Number</title>
+    <title>Display Random Numbers</title>
 </head>
 <body>
 
-<button onclick="displayCondolenceNumber()">Display Condolence Number</button>
+<button onclick="displayRandomNumber()">Display Random Number</button>
+<p id="randomNumberDisplay"></p>
 
 <script>
     // Fetch data from JSON file
     async function fetchData() {
         const response = await fetch('data.json');
         const data = await response.json();
-        return data.condolenceNumber;
+        return data.randomNumbers;
     }
 
-    // Display the condolence number
-    async function displayCondolenceNumber() {
-        const condolenceNumber = await fetchData();
-        alert('The condolence number is: ' + condolenceNumber);
+    // Display random number below the button
+    async function displayRandomNumber() {
+        const randomNumbers = await fetchData();
+        const randomIndex = Math.floor(Math.random() * randomNumbers.length);
+        const randomNumber = randomNumbers[randomIndex];
+
+        // Display the random number below the button
+        const displayElement = document.getElementById('randomNumberDisplay');
+        displayElement.textContent = 'Random Number: ' + randomNumber;
     }
 </script>
 
