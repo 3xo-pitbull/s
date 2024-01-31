@@ -3,86 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>عرض رقم عشوائي</title>
-    <style>
-        #countdownDisplay {
-            color: black; /* لون افتراضي */
-        }
-    </style>
+    <title>عرض وحذف رقم عشوائي من JSON</title>
 </head>
 <body>
     <h1>رقم عشوائي</h1>
     <p id="randomNumberDisplay"></p>
-    <div id="countdownDisplay"></div>
+    <button onclick="generateAndRemoveRandomNumber()">عرض رقم عشوائي وحذفه</button>
+    <div id="countdown"></div>
 
     <script>
-        let countdownValue = 3600; // 3600 ثانية = ساعة واحدة
-        let countdownInterval;
-
-        // التحقق من حالة المتصفح في sessionStorage
-        let isBrowserBlocked = sessionStorage.getItem('isBrowserBlocked') === 'true';
-
-        function generateRandomNumber() {
-            // التحقق مما إذا كان المتصفح قد تم حظره
-            if (isBrowserBlocked) {
-                alert('تم حظر المتصفح لمدة ساعة');
-                return;
-            }
-
+        function generateAndRemoveRandomNumber() {
             // قراءة محتوى ملف JSON
             fetch('data.json')
                 .then(response => response.json())
                 .then(data => {
                     // تحديد رقم عشوائي من الأرقام المتاحة
                     const randomNumbers = data.numbers;
-                    const randomNumber = randomNumbers[Math.floor(Math.random() * randomNumbers.length)];
 
-                    // عرض الرقم في الصفحة
-                    document.getElementById('randomNumberDisplay').textContent = 'الرقم العشوائي: ' + randomNumber;
+                    if (randomNumbers.length > 0) {
+                        const randomIndex = Math.floor(Math.random() * randomNumbers.length);
+                        const randomNumber = randomNumbers[randomIndex];
 
-                    // بدء الوقت التنازلي
-                    startCountdown();
+                        // عرض الرقم في الصفحة
+                        document.getElementById('randomNumberDisplay').textContent = 'الرقم العشوائي: ' + randomNumber;
 
-                    // حظر المتصفح لمدة ساعة
-                    sessionStorage.setItem('isBrowserBlocked', 'true');
-                    setTimeout(() => {
-                        sessionStorage.removeItem('isBrowserBlocked');
-                        isBrowserBlocked = false;
-                    }, 3600000); // 3600000 مللي ثانية = ساعة واحدة
+                        // حذف الرقم من المصفوفة
+                        randomNumbers.splice(randomIndex, 1);
+
+                        // إعداد تأخير للحصول على الرقم مرة أخرى بعد دقيقة وتحديث العد التنازلي
+                        setTimeout(() => {
+                            generateAndRemoveRandomNumber();
+                        }, 60000);
+
+                        // عرض العد التنازلي
+                        displayCountdown();
+                    } else {
+                        document.getElementById('randomNumberDisplay').textContent = 'لقد تم عرض كل الأرقام.';
+                    }
                 })
                 .catch(error => console.error('حدث خطأ في قراءة الملف JSON:', error));
         }
 
-        function startCountdown() {
-            // بدء الوقت التنازلي
-            countdownInterval = setInterval(function () {
-                countdownValue--;
+        function displayCountdown() {
+            let seconds = 60;
+            const countdownElement = document.getElementById('countdown');
 
-                // عرض الوقت التنازلي
-                const countdownDisplay = document.getElementById('countdownDisplay');
+            const countdownInterval = setInterval(() => {
+                countdownElement.textContent = `الوقت المتبقي: ${seconds} ثانية`;
 
-                if (countdownValue <= 0) {
-                    // إيقاف العد التنازلي عند انتهاء الساعة
+                if (seconds <= 0) {
                     clearInterval(countdownInterval);
-                    countdownDisplay.textContent = 'انتهى الوقت';
+                    countdownElement.textContent = '';
                 } else {
-                    // عرض الوقت التنازلي
-                    countdownDisplay.textContent = `الوقت المتبقي: ${formatTime(countdownValue)}`;
+                    seconds--;
                 }
-
-                // تغيير لون الوقت التنازلي إلى أحمر إذا كان أقل من 10 ثوان
-                countdownDisplay.style.color = countdownValue < 10 ? 'red' : 'black';
             }, 1000);
         }
-
-        function formatTime(seconds) {
-            const minutes = Math.floor(seconds / 60);
-            const remainingSeconds = seconds % 60;
-            return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-        }
-
-        // لاستدعاء الدالة `generateRandomNumber` عند تحديث الصفحة
-        window.onload = generateRandomNumber;
     </script>
 </body>
 </html>
