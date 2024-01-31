@@ -3,23 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حفظ نص داخل الموقع</title>
+    <title>عرض رقم عشوائي بعد ساعة</title>
 </head>
 <body>
-    <h1>كتابة وحفظ نص</h1>
-    
-    <textarea id="textInput" placeholder="اكتب هنا..."></textarea>
-    <button onclick="saveText()">حفظ النص</button>
+    <h1>رقم عشوائي</h1>
+    <p id="randomNumberDisplay"></p>
+    <p id="countdownDisplay"></p>
+    <button onclick="generateRandomNumber()">عرض رقم عشوائي</button>
 
     <script>
-        function saveText() {
-            // الحصول على قيمة النص من النموذج
-            const textInputValue = document.getElementById('textInput').value;
+        let countdownTimer;
 
-            // حفظ النص في متغير 'text.txt' داخل الموقع
-            localStorage.setItem('text.txt', textInputValue);
+        function generateRandomNumber() {
+            // تعطيل الزر لمنع النقر قبل انتهاء العداد
+            document.querySelector('button').disabled = true;
 
-            alert('تم حفظ النص بنجاح!');
+            // إعداد عداد زمني لمدة ساعة (3600000 مللي ثانية)
+            const countdownDuration = 3600000;
+            let countdownValue = countdownDuration / 1000; // تحويل إلى ثواني
+
+            // عرض العداد
+            displayCountdown(countdownValue);
+
+            // بدء العداد التنازلي
+            countdownTimer = setInterval(function () {
+                countdownValue--;
+
+                // عرض العداد
+                displayCountdown(countdownValue);
+
+                if (countdownValue <= 0) {
+                    // إعادة تمكين الزر بعد انتهاء العداد
+                    document.querySelector('button').disabled = false;
+
+                    // إيقاف العداد
+                    clearInterval(countdownTimer);
+                }
+            }, 1000);
+
+            // قراءة محتوى ملف JSON
+            fetch('data.json')
+                .then(response => response.json())
+                .then(data => {
+                    // تحديد رقم عشوائي من الأرقام المتاحة
+                    const randomNumbers = data.numbers;
+                    const randomNumber = randomNumbers[Math.floor(Math.random() * randomNumbers.length)];
+
+                    // عرض الرقم في الصفحة
+                    document.getElementById('randomNumberDisplay').textContent = 'الرقم العشوائي: ' + randomNumber;
+                })
+                .catch(error => console.error('حدث خطأ في قراءة الملف JSON:', error));
+        }
+
+        function displayCountdown(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+
+            document.getElementById('countdownDisplay').textContent = `الوقت المتبقي: ${minutes} دقيقة و ${remainingSeconds} ثانية`;
         }
     </script>
 </body>
