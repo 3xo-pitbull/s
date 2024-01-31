@@ -69,16 +69,18 @@
 
                 // عرض الوقت التنازلي
                 const countdownDisplay = document.getElementById('countdownDisplay');
-                countdownDisplay.textContent = `الوقت المتبقي: ${formatTime(countdownValue)}`;
-
-                // تغيير لون الوقت التنازلي إلى أحمر إذا كان أقل من 10 ثوان
-                countdownDisplay.style.color = countdownValue < 10 ? 'red' : 'black';
 
                 if (countdownValue <= 0) {
                     // إيقاف العد التنازلي عند انتهاء الساعة
                     clearInterval(countdownInterval);
                     countdownDisplay.textContent = 'انتهى الوقت';
+                } else {
+                    // عرض الوقت التنازلي
+                    countdownDisplay.textContent = `الوقت المتبقي: ${formatTime(countdownValue)}`;
                 }
+
+                // تغيير لون الوقت التنازلي إلى أحمر إذا كان أقل من 10 ثوان
+                countdownDisplay.style.color = countdownValue < 10 ? 'red' : 'black';
             }, 1000);
         }
 
@@ -87,9 +89,8 @@
             const remainingSeconds = seconds % 60;
             return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
         }
-    </script>
-    <!-- لاستدعاء الدالة `generateRandomNumber` عند تحديث الصفحة -->
-    <script>
+
+        // لاستدعاء الدالة `generateRandomNumber` عند تحديث الصفحة
         window.onload = generateRandomNumber;
     </script>
 </body>
