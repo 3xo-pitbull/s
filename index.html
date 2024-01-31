@@ -13,46 +13,58 @@
             margin: 0;
         }
 
-        button {
-            font-size: 1.5em;
+        .copyButton {
+            font-size: 0.8em;
+            margin-left: 10px;
         }
     </style>
 </head>
 <body>
     <button id="randomNumberButton"></button>
+    <button class="copyButton" onclick="copyRandomNumber()">نسخ</button>
 
     <script>
+        let currentRandomNumber;
+
         function generateRandomNumber() {
-            const lastUpdateTime = localStorage.getItem('lastUpdateTime');
-            const currentTime = new Date().getTime();
+            // قراءة محتوى ملف JSON
+            fetch('data.json')
+                .then(response => response.json())
+                .then(data => {
+                    // تحديد رقم عشوائي من الأرقام المتاحة
+                    const randomNumbers = data.numbers;
 
-            // إذا لم يتم تحديث الرقم في الـ 60 ثانية الأخيرة
-            if (!lastUpdateTime || (currentTime - lastUpdateTime > 60000)) {
-                // قراءة محتوى ملف JSON
-                fetch('data.json')
-                    .then(response => response.json())
-                    .then(data => {
-                        // تحديد رقم عشوائي من الأرقام المتاحة
-                        const randomNumbers = data.numbers;
+                    if (randomNumbers.length > 0) {
+                        const randomIndex = Math.floor(Math.random() * randomNumbers.length);
+                        currentRandomNumber = randomNumbers[randomIndex];
 
-                        if (randomNumbers.length > 0) {
-                            const randomIndex = Math.floor(Math.random() * randomNumbers.length);
-                            const randomNumber = randomNumbers[randomIndex];
+                        // عرض الرقم في زر الأرقام
+                        const buttonElement = document.getElementById('randomNumberButton');
+                        buttonElement.textContent = 'الرقم العشوائي: ' + currentRandomNumber;
+                    } else {
+                        alert('لقد تم عرض كل الأرقام.');
+                    }
+                })
+                .catch(error => console.error('حدث خطأ في قراءة الملف JSON:', error));
+        }
 
-                            // عرض الرقم في زر الأرقام
-                            const buttonElement = document.getElementById('randomNumberButton');
-                            buttonElement.textContent = 'الرقم العشوائي: ' + randomNumber;
+        function copyRandomNumber() {
+            if (currentRandomNumber) {
+                // إنشاء نص مؤقت للنسخ
+                const tempInput = document.createElement('input');
+                tempInput.value = currentRandomNumber;
+                document.body.appendChild(tempInput);
 
-                            // تخزين الوقت الحالي
-                            localStorage.setItem('lastUpdateTime', currentTime);
-                        } else {
-                            alert('لقد تم عرض كل الأرقام.');
-                        }
-                    })
-                    .catch(error => console.error('حدث خطأ في قراءة الملف JSON:', error));
+                // تحديد ونسخ النص
+                tempInput.select();
+                document.execCommand('copy');
+
+                // إزالة العنصر المؤقت
+                document.body.removeChild(tempInput);
+
+                alert('تم نسخ الرقم: ' + currentRandomNumber);
             } else {
-                // إذا كان قد تم تحديث الرقم في الـ 60 ثانية الأخيرة
-                alert('لم يمر وقت كافٍ لتحديث الرقم.');
+                alert('لم يتم إنشاء رقم عشوائي بعد.');
             }
         }
 
