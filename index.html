@@ -1,34 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Display Random Numbers</title>
+    <title>عرض رقم عشوائي من JSON</title>
 </head>
 <body>
+    <h1>رقم عشوائي</h1>
+    <p id="randomNumberDisplay"></p>
+    <button onclick="generateRandomNumber()">عرض رقم عشوائي</button>
 
-<button onclick="displayRandomNumber()">Display Random Number</button>
-<p id="randomNumberDisplay"></p>
+    <script>
+        function generateRandomNumber() {
+            // قراءة محتوى ملف JSON
+            fetch('data.json')
+                .then(response => response.json())
+                .then(data => {
+                    // تحديد رقم عشوائي من الأرقام المتاحة
+                    const randomNumbers = data.numbers;
 
-<script>
-    // Fetch data from JSON file
-    async function fetchData() {
-        const response = await fetch('data.json');
-        const data = await response.json();
-        return data.randomNumbers;
-    }
+                    if (randomNumbers.length > 0) {
+                        const randomIndex = Math.floor(Math.random() * randomNumbers.length);
+                        const randomNumber = randomNumbers[randomIndex];
 
-    // Display random number below the button
-    async function displayRandomNumber() {
-        const randomNumbers = await fetchData();
-        const randomIndex = Math.floor(Math.random() * randomNumbers.length);
-        const randomNumber = randomNumbers[randomIndex];
-
-        // Display the random number below the button
-        const displayElement = document.getElementById('randomNumberDisplay');
-        displayElement.textContent = 'Random Number: ' + randomNumber;
-    }
-</script>
-
+                        // عرض الرقم في الصفحة
+                        document.getElementById('randomNumberDisplay').textContent = 'الرقم العشوائي: ' + randomNumber;
+                    } else {
+                        document.getElementById('randomNumberDisplay').textContent = 'لقد تم عرض كل الأرقام.';
+                    }
+                })
+                .catch(error => console.error('حدث خطأ في قراءة الملف JSON:', error));
+        }
+    </script>
 </body>
 </html>
