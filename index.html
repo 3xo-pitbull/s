@@ -40,23 +40,22 @@
         }
 
         document.getElementById('generateButton').addEventListener('click', function () {
-            const generatedNumber = generateRandomNumber();
-
-            // عرض الرقم داخل زر "Generate Random Number"
-            document.getElementById('generateButton').textContent = `Random Number: ${generatedNumber}`;
-
             // تعطيل الزر لمدة دقيقة
             document.getElementById('generateButton').disabled = true;
 
-            // تحديث العداد التنازلي
-            updateCountdown();
-        });
+            fetch('data.json')
+                .then(response => response.json())
+                .then(data => {
+                    const randomNumber = data.number;
 
-        function generateRandomNumber() {
-            // هنا يمكنك استيراد الرقم من ملف data.json أو توليده كما تحتاج
-            // لهذا المثال، سأقوم بتوليد رقم عشوائي بين 1 و 100
-            return Math.floor(Math.random() * 100) + 1;
-        }
+                    // عرض الرقم داخل زر "Generate Random Number"
+                    document.getElementById('generateButton').textContent = `Random Number: ${randomNumber}`;
+
+                    // تحديث العداد التنازلي
+                    updateCountdown();
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        });
     </script>
 
     <style>
