@@ -6,7 +6,7 @@
     <title>عرض رقم عشوائي</title>
     <style>
         #countdownDisplay {
-            color: red; /* لون افتراضي */
+            color: black; /* لون افتراضي */
         }
     </style>
 </head>
@@ -18,7 +18,9 @@
     <script>
         let countdownValue = 3600; // 3600 ثانية = ساعة واحدة
         let countdownInterval;
-        let isBrowserBlocked = false;
+
+        // التحقق من حالة المتصفح في localStorage
+        let isBrowserBlocked = localStorage.getItem('isBrowserBlocked') === 'true';
 
         function generateRandomNumber() {
             // التحقق مما إذا كان المتصفح قد تم حظره
@@ -42,12 +44,12 @@
                     countdownValue = 3600;
                     startCountdown();
 
-                    // إعادة تعيين الرقم بعد مرور الساعة
-                    setTimeout(() => resetNumber(randomNumber), 3600000); // 3600000 مللي ثانية = ساعة واحدة
-
                     // حظر المتصفح لمدة ساعة
-                    isBrowserBlocked = true;
-                    setTimeout(() => isBrowserBlocked = false, 3600000); // 3600000 مللي ثانية = ساعة واحدة
+                    localStorage.setItem('isBrowserBlocked', 'true');
+                    setTimeout(() => {
+                        localStorage.removeItem('isBrowserBlocked');
+                        isBrowserBlocked = false;
+                    }, 3600000); // 3600000 مللي ثانية = ساعة واحدة
                 })
                 .catch(error => console.error('حدث خطأ في قراءة الملف JSON:', error));
         }
@@ -86,7 +88,9 @@
             return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
         }
     </script>
-    <br>
-    <button onclick="generateRandomNumber()">عرض رقم عشوائي</button>
+    <!-- لاستدعاء الدالة `generateRandomNumber` عند تحديث الصفحة -->
+    <script>
+        window.onload = generateRandomNumber;
+    </script>
 </body>
 </html>
