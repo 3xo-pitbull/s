@@ -15,7 +15,10 @@
 
         .copyButton {
             font-size: 0.8em;
-            margin-left: 10px;
+        }
+
+        .copied {
+            background-color: green;
         }
     </style>
 </head>
@@ -41,6 +44,11 @@
                         // عرض الرقم في زر الأرقام
                         const buttonElement = document.getElementById('randomNumberButton');
                         buttonElement.textContent = 'الرقم العشوائي: ' + currentRandomNumber;
+
+                        // إزالة اللون الأخضر وعرض الزر عند تحديث الرقم
+                        const copyButton = document.querySelector('.copyButton');
+                        copyButton.classList.remove('copied');
+                        copyButton.style.display = 'inline';
                     } else {
                         alert('لقد تم عرض كل الأرقام.');
                     }
@@ -62,7 +70,14 @@
                 // إزالة العنصر المؤقت
                 document.body.removeChild(tempInput);
 
-                alert('تم نسخ الرقم: ' + currentRandomNumber);
+                // تغيير لون زر النسخ
+                const copyButton = document.querySelector('.copyButton');
+                copyButton.classList.add('copied');
+
+                // إخفاء زر النسخ بعد ثانيتين
+                setTimeout(() => {
+                    copyButton.style.display = 'none';
+                }, 2000);
             } else {
                 alert('لم يتم إنشاء رقم عشوائي بعد.');
             }
