@@ -19,8 +19,8 @@
         let countdownValue = 3600; // 3600 ثانية = ساعة واحدة
         let countdownInterval;
 
-        // التحقق من حالة المتصفح في localStorage
-        let isBrowserBlocked = localStorage.getItem('isBrowserBlocked') === 'true';
+        // التحقق من حالة المتصفح في sessionStorage
+        let isBrowserBlocked = sessionStorage.getItem('isBrowserBlocked') === 'true';
 
         function generateRandomNumber() {
             // التحقق مما إذا كان المتصفح قد تم حظره
@@ -45,9 +45,9 @@
                     startCountdown();
 
                     // حظر المتصفح لمدة ساعة
-                    localStorage.setItem('isBrowserBlocked', 'true');
+                    sessionStorage.setItem('isBrowserBlocked', 'true');
                     setTimeout(() => {
-                        localStorage.removeItem('isBrowserBlocked');
+                        sessionStorage.removeItem('isBrowserBlocked');
                         isBrowserBlocked = false;
                     }, 3600000); // 3600000 مللي ثانية = ساعة واحدة
                 })
