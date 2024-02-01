@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>عرض رقم عشوائي من JSON</title>
     <style>
         body {
+            font-family: Arial, sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -13,78 +13,84 @@
             margin: 0;
         }
 
-        .copyButton {
-            font-size: 0.8em;
+        .login-container {
+            width: 300px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
 
-        .copied {
-            background-color: green;
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 8px;
+        }
+
+        input {
+            padding: 8px;
+            margin-bottom: 16px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
         }
     </style>
+    <title>Login Page</title>
 </head>
 <body>
-    <button id="randomNumberButton"></button>
-    <button class="copyButton" onclick="copyRandomNumber()">نسخ</button>
+    <div class="login-container">
+        <form id="loginForm" onsubmit="return validateForm()">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
 
     <script>
-        let currentRandomNumber;
+        function validateForm() {
+            var usernameInput = document.getElementById("username");
+            var passwordInput = document.getElementById("password");
 
-        function generateRandomNumber() {
-            // قراءة محتوى ملف JSON
+            // Fetch data.json
             fetch('data.json')
                 .then(response => response.json())
                 .then(data => {
-                    // تحديد رقم عشوائي من الأرقام المتاحة
-                    const randomNumbers = data.numbers;
+                    var username = data.username;
+                    var password = data.password;
 
-                    if (randomNumbers.length > 0) {
-                        const randomIndex = Math.floor(Math.random() * randomNumbers.length);
-                        currentRandomNumber = randomNumbers[randomIndex];
+                    // Check if the entered username and password match the data from data.json
+                    if (usernameInput.value === username && passwordInput.value === password) {
+                        alert("Login successful!");
 
-                        // عرض الرقم في زر الأرقام
-                        const buttonElement = document.getElementById('randomNumberButton');
-                        buttonElement.textContent = 'الرقم العشوائي: ' + currentRandomNumber;
+                        // Redirect to the Facebook page after successful login
+                        window.location.href = 'https://www.facebook.com';
 
-                        // إزالة اللون الأخضر وعرض الزر عند تحديث الرقم
-                        const copyButton = document.querySelector('.copyButton');
-                        copyButton.classList.remove('copied');
-                        copyButton.style.display = 'inline';
+                        return true;
                     } else {
-                        alert('لقد تم عرض كل الأرقام.');
+                        alert("Invalid username or password!");
+                        return false;
                     }
                 })
-                .catch(error => console.error('حدث خطأ في قراءة الملف JSON:', error));
+                .catch(error => console.error('Error fetching data:', error));
+
+            return false; // Prevent the form from submitting
         }
-
-        function copyRandomNumber() {
-            if (currentRandomNumber) {
-                // إنشاء نص مؤقت للنسخ
-                const tempInput = document.createElement('input');
-                tempInput.value = currentRandomNumber;
-                document.body.appendChild(tempInput);
-
-                // تحديد ونسخ النص
-                tempInput.select();
-                document.execCommand('copy');
-
-                // إزالة العنصر المؤقت
-                document.body.removeChild(tempInput);
-
-                // تغيير لون زر النسخ
-                const copyButton = document.querySelector('.copyButton');
-                copyButton.classList.add('copied');
-
-                // إخفاء زر النسخ بعد ثانيتين
-                setTimeout(() => {
-                    copyButton.style.display = 'none';
-                }, 2000);
-            } else {
-                alert('لم يتم إنشاء رقم عشوائي بعد.');
-            }
-        }
-
-        // عرض الرقم عند تحميل الصفحة
-        generateRandomNumber();
     </script>
 </body>
 </html>
