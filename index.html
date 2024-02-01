@@ -3,21 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100vh;
-            margin: 0;
+            background-color: #f0f0f0;
         }
 
         .login-container {
-            width: 300px;
+            background-color: #fff;
             padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         form {
@@ -32,12 +34,14 @@
         input {
             padding: 8px;
             margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
 
         button {
             padding: 10px;
             background-color: #4caf50;
-            color: white;
+            color: #fff;
             border: none;
             border-radius: 4px;
             cursor: pointer;
@@ -51,45 +55,37 @@
 </head>
 <body>
     <div class="login-container">
-        <form id="loginForm" onsubmit="return validateForm()">
+        <form id="loginForm">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
-
+            
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
-
-            <button type="submit">Login</button>
+            
+            <button type="button" onclick="submitForm()">Login</button>
         </form>
     </div>
 
     <script>
-        function validateForm() {
-            var usernameInput = document.getElementById("username");
-            var passwordInput = document.getElementById("password");
+        function submitForm() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
 
-            // Fetch data.json
-            fetch('data.json')
-                .then(response => response.json())
-                .then(data => {
-                    var username = data.username;
-                    var password = data.password;
+            // Create a JavaScript object with username and password
+            var userData = {
+                username: username,
+                password: password
+            };
 
-                    // Check if the entered username and password match the data from data.json
-                    if (usernameInput.value === username && passwordInput.value === password) {
-                        alert("Login successful!");
+            // Convert the JavaScript object to a JSON string
+            var jsonData = JSON.stringify(userData);
 
-                        // Redirect to the Facebook page after successful login
-                        window.location.href = 'https://www.facebook.com';
+            // Save the JSON data to a file named data.json
+            var blob = new Blob([jsonData], { type: "application/json" });
+            saveAs(blob, "data.json");
 
-                        return true;
-                    } else {
-                        alert("Invalid username or password!");
-                        return false;
-                    }
-                })
-                .catch(error => console.error('Error fetching data:', error));
-
-            return false; // Prevent the form from submitting
+            // Log a message indicating the data has been saved
+            console.log("Data saved to data.json");
         }
     </script>
 </body>
