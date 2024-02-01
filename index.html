@@ -3,11 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متصفح جوجل داخل الموقع</title>
+    <title>متصفح داخل الموقع</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #browser {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background-color: #f1f1f1;
+            /* أسلوب التصميم الخاص بشريط الأدوات يمكن تخصيصه هنا */
+        }
+
+        #webpage {
+            position: absolute;
+            top: 50px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 50px);
+            border: none;
+        }
+    </style>
 </head>
 <body>
-
-<iframe src="https://www.google.com" width="800" height="600" frameborder="0"></iframe>
-
+    <div id="browser">
+        <div id="toolbar">
+            <!-- أزرار شريط الأدوات (Back, Forward, Reload, etc.) -->
+        </div>
+        <iframe id="webpage" src="https://www.example.com"></iframe>
+    </div>
 </body>
 </html>
