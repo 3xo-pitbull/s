@@ -1,49 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متصفح أوبرا داخل الموقع</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        #browser {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-        }
-
-        #toolbar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 50px;
-            background-color: #f1f1f1;
-            /* أسلوب التصميم الخاص بشريط الأدوات يمكن تخصيصه هنا */
-        }
-
-        #webpage {
-            position: absolute;
-            top: 50px;
-            left: 0;
-            width: 100%;
-            height: calc(100% - 50px);
-            border: none;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>أرقام</title>
 </head>
 <body>
-    <div id="browser">
-        <div id="toolbar">
-            <!-- أزرار شريط الأدوات (Back, Forward, Reload, etc.) -->
-        </div>
-        <iframe id="webpage" src="https://www.opera.com"></iframe>
-    </div>
+
+<ul id="numbers-list"></ul>
+
+<script>
+  // جلب البيانات من ملف JSON باستخدام JavaScript
+  fetch('numbers_data.json')
+    .then(response => response.json())
+    .then(data => {
+      // الوصول إلى قائمة الأرقام من البيانات
+      const numbersList = data.numbers;
+
+      // العنصر الذي سنعرض فيه الأرقام
+      const numbersUl = document.getElementById('numbers-list');
+
+      // عرض الأرقام في الصفحة
+      Object.keys(numbersList).forEach(number => {
+        const listItem = document.createElement('li');
+        listItem.textContent = number;
+        numbersUl.appendChild(listItem);
+      });
+    });
+</script>
+
 </body>
 </html>
