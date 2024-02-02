@@ -3,30 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>أرقام</title>
+  <title>تنزيل ملف JSON</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 
-<ul id="numbers-list"></ul>
+<button onclick="downloadRandomNumbers()">تنزيل ملف JSON</button>
 
 <script>
-  // جلب البيانات من ملف JSON باستخدام JavaScript
-  fetch('numbers_data.json')
-    .then(response => response.json())
-    .then(data => {
-      // الوصول إلى قائمة الأرقام من البيانات
-      const numbersList = data.numbers;
+  function downloadRandomNumbers() {
+    // البيانات المراد تضمينها في الملف JSON
+    const jsonData = {
+      "numbers": {}
+    };
 
-      // العنصر الذي سنعرض فيه الأرقام
-      const numbersUl = document.getElementById('numbers-list');
+    // إنشاء 101 رقم عشوائي وإضافتها إلى البيانات
+    for (let i = 0; i < 101; i++) {
+      const randomNum = Math.floor(Math.random() * (999999999999999 - 100000000000000 + 1) + 100000000000000);
+      jsonData.numbers[randomNum] = { "kay": "0" };
+    }
 
-      // عرض الأرقام في الصفحة
-      Object.keys(numbersList).forEach(number => {
-        const listItem = document.createElement('li');
-        listItem.textContent = number;
-        numbersUl.appendChild(listItem);
-      });
-    });
+    // تحويل الكائن إلى نص JSON
+    const jsonString = JSON.stringify(jsonData, null, 2);
+
+    // إنشاء كائن Blob
+    const blob = new Blob([jsonString], { type: 'application/json' });
+
+    // إنشاء رابط لتنزيل الملف
+    const url = URL.createObjectURL(blob);
+
+    // إنشاء عنصر الرابط
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'random_numbers_data.json';
+
+    // إضافة الرابط إلى الصفحة ونقر عليه تلقائيًا
+    document.body.appendChild(a);
+    a.click();
+
+    // حذف الرابط بعد التنزيل
+    document.body.removeChild(a);
+  }
 </script>
 
 </body>
