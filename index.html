@@ -25,7 +25,15 @@
 <body>
     <div id="content">
         <!-- Your content goes here -->
+        <a href="https://data-renault.blogspot.com" id="link">Click here</a>
         <iframe src="https://data-renault.blogspot.com" frameborder="0" style="width:100%; height:100%;"></iframe>
     </div>
+
+    <script>
+        document.getElementById('link').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior
+            alert('You clicked the link, but navigation is disabled in this demo.'); // Display alert or perform any other action
+        });
+    </script>
 </body>
 </html>
