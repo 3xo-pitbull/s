@@ -1,61 +1,136 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تنزيل ملف JSON</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 50px;
-    }
-
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>غرفة الدردشة</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+  }
+  #chatArea {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    max-height: 400px;
+  }
+  .messageContainer {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+  .senderName {
+    font-size: 12px;
+    color: blue;
+    margin-bottom: 5px;
+  }
+  .message {
+    max-width: 70%;
+    padding: 10px;
+    border-radius: 10px;
+    word-wrap: break-word;
+  }
+  .myMessage {
+    align-self: flex-start;
+    background-color: #DFF2BF;
+  }
+  .otherMessage {
+    align-self: flex-end;
+    background-color: #FFFFCC;
+  }
+  #messageInput {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+</style>
 </head>
 <body>
 
-<button onclick="downloadRandomNumbers()">تنزيل ملف JSON</button>
+<div id="chatArea"></div>
+<input type="text" id="messageInput" placeholder="اكتب رسالتك هنا">
+<button onclick="sendMessage()">إرسال</button>
 
 <script>
-  function downloadRandomNumbers() {
-    // البيانات المراد تضمينها في الملف JSON
-    const jsonData = {
-      "numbers": {}
-    };
+var senderName = localStorage.getItem("senderName") || prompt("الرجاء إدخال اسمك:", "ضيف");
 
-    // إنشاء 101 رقم عشوائي وإضافتها إلى البيانات
-    for (let i = 0; i < 91000; i++) {
-      const randomNum = Math.floor(Math.random() * (999999999999999 - 100000000000000 + 1) + 100000000000000);
-      jsonData.numbers[randomNum] = { "kay": "0" };
+function fetchMessages() {
+    fetch("https://sheetdb.io/api/v1/i4mf1cmxz86h2")
+    .then(response => response.json())
+    .then(data => {
+        var chatArea = document.getElementById("chatArea");
+        chatArea.innerHTML = "";
+        data.forEach(function(message) {
+            var messageContainer = document.createElement("div");
+            messageContainer.classList.add("messageContainer");
+            var senderNameElement = document.createElement("div");
+            senderNameElement.textContent = message.name;
+            senderNameElement.classList.add("senderName");
+            var messageDiv = document.createElement("div");
+            messageDiv.textContent = message.message;
+            messageDiv.classList.add("message");
+            if (message.name === senderName) {
+                messageContainer.classList.add("myMessage");
+            } else {
+                messageContainer.classList.add("otherMessage");
+            }
+            messageContainer.appendChild(senderNameElement);
+            messageContainer.appendChild(messageDiv);
+            chatArea.appendChild(messageContainer);
+        });
+        chatArea.scrollTop = chatArea.scrollHeight;
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function sendMessage() {
+    var messageInput = document.getElementById("messageInput");
+    var message = messageInput.value.trim();
+    if (message !== "") {
+        var data = {
+            "name": senderName,
+            "message": message
+        };
+        fetch("https://sheetdb.io/api/v1/i4mf1cmxz86h2", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ data: [data] })
+        })
+        .then(response => response.json())
+        .then(data => {
+            fetchMessages();
+            messageInput.blur(); // إزالة الفوكس عن حقل الإدخال
+        })
+        .catch(error => console.error('Error:', error));
+        messageInput.value = "";
     }
+}
 
-    // تحويل الكائن إلى نص JSON
-    const jsonString = JSON.stringify(jsonData, null, 2);
-
-    // إنشاء كائن Blob
-    const blob = new Blob([jsonString], { type: 'application/json' });
-
-    // إنشاء رابط لتنزيل الملف
-    const url = URL.createObjectURL(blob);
-
-    // إنشاء عنصر الرابط
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'data.json';
-
-    // إضافة الرابط إلى الصفحة ونقر عليه تلقائيًا
-    document.body.appendChild(a);
-    a.click();
-
-    // حذف الرابط بعد التنزيل
-    document.body.removeChild(a);
-  }
+localStorage.setItem("senderName", senderName);
+fetchMessages();
 </script>
 
 </body>
