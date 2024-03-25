@@ -7,8 +7,9 @@
 
 /* Global Styles */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f3f2f3;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f8f8;
+    color: #333;
 }
 
 .container {
@@ -30,22 +31,25 @@ header {
 }
 
 .message {
-    background-color: #6929ca;
-    color: white;
-    padding: 10px;
-    border-radius: 10px;
-    margin-bottom: 10px;
+    background-color: #fff;
+    color: #333;
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .message span {
-    font-style: italic;
+    display: block;
+    font-size: 14px;
     font-weight: bold;
-    color: #b5b0b9;
+    color: #666;
+    margin-bottom: 5px;
 }
 
 .sent {
     text-align: right;
-    background-color: #a79cb3;
+    background-color: #f0f0f0;
 }
 
 /* Form Styles */
@@ -66,13 +70,13 @@ header {
 
 #send-button {
     padding: 10px 20px;
-    background-color: #6929ca;
-    color: white;
+    background-color: #6c5ce7;
+    color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
 #send-button:hover {
-    background-color: #5c1fa3;
+    background-color: #5539b3;
 }
