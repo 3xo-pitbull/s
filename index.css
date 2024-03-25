@@ -1,46 +1,31 @@
 body {
-    background-color: #e5ddd5; /* لون خلفية */
+    background-color: #f3f2f3;
     margin: 0;
     padding: 0;
 }
 
 header {
     text-align: center;
-    background-color: #075e54; /* لون الهيدر */
-    color: white; /* لون النص */
-    padding: 10px 0;
 }
 
-#messages {
-    padding-bottom: 80px; /* تغيير التباعد بين الرسائل */
-    overflow-y: scroll; /* إضافة تمرير عمودي */
-    height: 70vh; /* تحديد ارتفاع محدد للرسائل */
+#messages{
+    padding-bottom: 30%;
 }
 
 li {
     list-style-type: none;
     margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 20px; /* زاوية الحواف */
-    max-width: 70%; /* الحد الأقصى لعرض الرسالة */
+    background-color: #6929ca;
+    padding: 5px;
+    border-radius: 10px;
+    color: white;
+    width: 50%;
 }
 
-li.sent {
-    text-align: right;
-    background-color: #dcf8c6; /* لون الرسالة المرسلة */
-    margin-left: 30%; /* تغيير توزيع الرسائل المرسلة */
-}
-
-li.received {
-    text-align: left;
-    background-color: #e1ffc7; /* لون الرسالة المستقبلة */
-    margin-right: 30%; /* تغيير توزيع الرسائل المستقبلة */
-}
-
-span {
+li span {
     font-style: italic;
-    font-weight: bold;
-    color: #999; /* لون النص الفرعي */
+    font-weight: bolder;
+    color: #b5b0b9;
 }
 
 #chat {
@@ -54,38 +39,26 @@ span {
     left: 0;
     bottom: 0;
     width: 100%;
-    background-color: #f0f0f0; /* لون النموذج */
-    padding: 10px 0; /* تباعد الحواف */
+    background-color: #b7b5b9;
 }
 
-input[type="text"] {
+input {
     width: 70%;
     height: 30px;
-    border: none;
-    padding: 5px;
-    border-radius: 20px;
-    margin-right: 5px;
 }
 
 button {
     width: 25%;
     height: 38px;
-    background-color: #128c7e; /* لون زر الإرسال */
-    color: white; /* لون النص */
-    border: none;
-    border-radius: 20px;
-}
-
-/* إضافة مربع للرسائل */
-li {
-    display: inline-block;
-    clear: both;
 }
 
 .sent {
-    float: right;
+    text-align: right;
+    background-color: #a79cb3;
+    margin-left: 50%;
 }
 
-.received {
-    float: left;
+.sent span {
+    margin-left: 5px;
+    color: #6929ca;
 }
