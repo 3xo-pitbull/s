@@ -8,8 +8,10 @@ header {
     text-align: center;
 }
 
-#messages{
-    padding-bottom: 30%;
+#messages {
+    height: 100vh; /* تعيين ارتفاع الرسائل ليملأ الصفحة بالكامل */
+    padding-bottom: 30px; /* قد تحتاج لتعديل هذا الرقم وفقًا لاحتياجات التصميم */
+    overflow-y: auto; /* إضافة تمرير عمودي في حالة وجود مزيد من الرسائل */
 }
 
 li {
