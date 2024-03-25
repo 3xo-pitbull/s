@@ -1,82 +1,72 @@
-/* Reset CSS */
-* {
-    box-sizing: border-box;
+body {
+    background-color: #e5ddd5; /* لون خلفية */
     margin: 0;
     padding: 0;
 }
 
-/* Global Styles */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #e5ddd5;
-    color: #333;
-}
-
-.container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-/* Header Styles */
 header {
     text-align: center;
-    margin-bottom: 20px;
+    background-color: #075e54; /* لون الهيدر */
+    color: white; /* لون النص */
+    padding: 10px 0;
 }
 
-/* Chat Styles */
 #messages {
+    padding-bottom: 80px; /* تغيير التباعد بين الرسائل */
+    overflow-y: scroll; /* إضافة تمرير عمودي */
+    height: 70vh; /* تحديد ارتفاع محدد للرسائل */
+}
+
+li {
     list-style-type: none;
-    margin-bottom: 20px;
-}
-
-.message {
-    background-color: #d5f5e3;
-    color: #333;
-    padding: 15px;
-    border-radius: 15px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.message span {
-    display: block;
-    font-size: 14px;
-    font-weight: bold;
-    color: #666;
-    margin-bottom: 5px;
-}
-
-.sent {
-    text-align: right;
-    background-color: #b8e994;
-}
-
-/* Form Styles */
-#message-form {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-}
-
-#message-input {
-    flex: 1;
+    margin-bottom: 10px;
+    background-color: #dcf8c6; /* لون الرسالة */
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-right: 10px;
+    border-radius: 20px; /* زاوية الحواف */
+    color: #075e54; /* لون النص */
+    max-width: 70%; /* الحد الأقصى لعرض الرسالة */
 }
 
-#send-button {
-    padding: 10px 20px;
-    background-color: #4cd137;
-    color: #fff;
+li.sent {
+    text-align: right;
+    background-color: #dcf8c6; /* لون الرسالة المرسلة */
+}
+
+li span {
+    font-style: italic;
+    font-weight: bold;
+    color: #999; /* لون النص الفرعي */
+}
+
+#chat {
+    width: 80%;
+    margin: auto;
+}
+
+#message-form {
+    text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #f0f0f0; /* لون النموذج */
+    padding: 10px 0; /* تباعد الحواف */
+}
+
+input[type="text"] {
+    width: 70%;
+    height: 30px;
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    padding: 5px;
+    border-radius: 20px;
+    margin-right: 5px;
 }
 
-#send-button:hover {
-    background-color: #44bd32;
+button {
+    width: 25%;
+    height: 38px;
+    background-color: #128c7e; /* لون زر الإرسال */
+    color: white; /* لون النص */
+    border: none;
+    border-radius: 20px;
 }
