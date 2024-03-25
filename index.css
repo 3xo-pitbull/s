@@ -75,3 +75,17 @@ button {
     border: none;
     border-radius: 20px;
 }
+
+/* إضافة مربع للرسائل */
+li {
+    display: inline-block;
+    clear: both;
+}
+
+.sent {
+    float: right;
+}
+
+.received {
+    float: left;
+}
