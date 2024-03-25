@@ -53,6 +53,7 @@ function sendMessage(e) {
   db.ref("messages/" + timestamp).set({
     username,
     message,
+    profilePicture: "" // سيتم تحديث هذا المسار بمسار الصورة المحددة
   });
 }
 
@@ -65,7 +66,26 @@ fetchChat.on("child_added", function (snapshot) {
   const messages = snapshot.val();
   const message = `<li class=${
     username === messages.username ? "sent" : "receive"
-  }><span>${messages.username}: </span>${messages.message}</li>`;
+  }><img src="${messages.profilePicture}" alt="Profile Picture" class="profile-picture"/><span>${messages.username}: </span>${messages.message}</li>`;
   // append the message on the page
   document.getElementById("messages").innerHTML += message;
 });
+
+// اختيار الصورة من الهاتف
+const fileInput = document.getElementById('file-input');
+const imagePreview = document.getElementById('image-preview'); // افترض أن لديك عنصر img لعرض الصورة
+
+fileInput.addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function() {
+        imagePreview.src = reader.result; // عرض الصورة المحملة
+        // يمكنك هنا تحديث مسار الصورة في قاعدة البيانات
+        // على سبيل المثال:
+        // db.ref("users/" + userID).update({ profilePicture: reader.result });
+    };
+
+    reader.readAsDataURL(file);
+});
+    
