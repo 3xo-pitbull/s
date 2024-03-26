@@ -1,3 +1,5 @@
+/* styles.css */
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -24,8 +26,8 @@ header {
 ul {
   list-style-type: none;
   padding: 0;
-  overflow-y: scroll; 
-  max-height: 300px; 
+  overflow-y: scroll;
+  max-height: 300px;
 }
 
 li {
@@ -51,16 +53,16 @@ li p {
 
 .username {
   color: red;
-  font-size: 10px; 
-  display: block; 
+  font-size: 10px;
+  display: block;
 }
 
 .sent .username {
-  text-align: right; 
+  text-align: right;
 }
 
 .receive .username {
-  text-align: left; 
+  text-align: left;
 }
 
 li.sent p {
