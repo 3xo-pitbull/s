@@ -1,0 +1,90 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+}
+
+#chat {
+  max-width: 600px;
+  margin: 20px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(1, 1, 1, 1.1);
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  overflow-y: scroll; 
+  max-height: 300px; 
+}
+
+li {
+  margin-bottom: 20px;
+  clear: both;
+  overflow: hidden;
+}
+
+li:last-child {
+  margin-bottom: 0;
+}
+
+li p {
+  background-color: #f2f2f2;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 16px;
+  max-width: 70%;
+  word-wrap: break-word;
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.username {
+  color: red;
+  font-size: 10px; 
+  display: block; 
+}
+
+.sent .username {
+  text-align: right; 
+}
+
+.receive .username {
+  text-align: left; 
+}
+
+li.sent p {
+  background-color: #d3e9fa;
+  float: right;
+}
+
+input[type="text"] {
+  width: calc(100% - 80px);
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+button[type="submit"] {
+  width: 70px;
+  padding: 10px;
+  border: none;
+  background-color: #333;
+  color: #fff;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #555;
+}
