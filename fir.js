@@ -1,13 +1,13 @@
 // Your web app's Firebase configuration
 var firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  databaseURL: "YOUR_DATABASE_URL",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
-  measurementId: "YOUR_MEASUREMENT_ID"
+  apiKey: "AIzaSyAk10om5JSh_XuoDarFVvLUVe3fsYGTob4",
+  authDomain: "comi-9f1ca.firebaseapp.com",
+  databaseURL: "https://comi-9f1ca-default-rtdb.firebaseio.com",
+  projectId: "comi-9f1ca",
+  storageBucket: "comi-9f1ca.appspot.com",
+  messagingSenderId: "994791550932",
+  appId: "1:994791550932:web:c6281127672a6542187041",
+  measurementId: "G-0JW69KG9KN"
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
